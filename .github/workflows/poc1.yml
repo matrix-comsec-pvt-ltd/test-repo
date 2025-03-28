@@ -1,0 +1,17 @@
+name: priority check
+
+on:
+  push:
+    branches:
+      - feature-abc
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Display test.txt contents
+        run: cat test.txt
