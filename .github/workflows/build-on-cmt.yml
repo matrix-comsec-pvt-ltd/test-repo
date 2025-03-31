@@ -19,7 +19,8 @@ jobs:
       - name: Check for changes
         id: check
         run: |
-          if git fetch origin main && git diff --quiet HEAD origin/main; then
+          git fetch origin main
+          if git diff --quiet HEAD origin/main; then
             echo "No changes found. Skipping build."
             echo "changes_exist=false" >> $GITHUB_ENV
           else
@@ -34,7 +35,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Run build
+      - name: Create text file
         run: |
-          echo "Building project..."
           echo "Changes are there" > changes.txt
+
