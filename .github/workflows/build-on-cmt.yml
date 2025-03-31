@@ -26,6 +26,7 @@ jobs:
           else
             echo "Changes detected. Proceeding with build."
             echo "changes_exist=true" >> $GITHUB_ENV
+          fi
 
   build:
     needs: check-changes
