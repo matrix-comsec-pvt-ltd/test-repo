@@ -1,4 +1,4 @@
-name: Nightly Build for Main Branch
+name: Nightly Build for Feature Branches
 
 on:
   schedule:
@@ -6,32 +6,34 @@ on:
   workflow_dispatch:
 
 jobs:
-  fetch-branches:
+  fetch-feature-branches:
     runs-on: ubuntu-latest
     outputs:
-      main_branch: ${{ steps.get-branch.outputs.main_branch }}
+      feature_branches: ${{ steps.get-feature-branches.outputs.feature_branches }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Get main branch
-        id: get-branch
+      - name: Get feature branches
+        id: get-feature-branches
         run: |
-          MAIN_BRANCH=$(git ls-remote --heads origin | awk -F'/' '{print $3}' | grep '^main' | jq -R -s -c 'split("\n")[:-1]')
-          echo "main_branch=$MAIN_BRANCH" >> $GITHUB_ENV
-          echo "::set-output name=main_branch::$MAIN_BRANCH"
+          FEATURE_BRANCHES=$(git ls-remote --heads origin | awk -F'/' '{print $3}' | grep -E '^feature-' | jq -R -s -c 'split("\n")[:-1]')
+          echo "feature_branches=$FEATURE_BRANCHES" >> $GITHUB_ENV
+          echo "::set-output name=feature_branches::$FEATURE_BRANCHES"
 
   build:
-    needs: fetch-branches
+    needs: fetch-feature-branches
     runs-on: ubuntu-latest
-    if: needs.fetch-branches.outputs.main_branch == 'main'
+    strategy:
+      matrix:
+        branch: ${{ fromJson(needs.fetch-feature-branches.outputs.feature_branches) }}
     steps:
-      - name: Checkout main branch
+      - name: Checkout feature branch ${{ matrix.branch }}
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ matrix.branch }}
       
       - name: Run build script
         run: |
-          echo "Building main branch"
+          echo "Building feature branch: ${{ matrix.branch }}"
           cat test.txt
