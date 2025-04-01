@@ -1,0 +1,32 @@
+name: check reuse of exported variable
+
+on:
+  workflow_dispatch:
+
+jobs:
+  example_job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Set Variable
+        run: export var1=kickstart
+
+      - name: Step 2 - Check Environment
+        run: echo "this is step2"
+
+      - name: Step 3 - Use Variable
+        run: |
+          echo "The value of var1 is: $var1"
+          #here value of var1 will not be available in step3 as each run command in a step runs in a new shell session.
+
+  example_job2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Set Variable
+        run: echo "var2=migration" >> $GITHUB_ENV
+
+      - name: Step 2 - Check Environment
+        run: echo "this is step2"
+
+      - name: Step 3 - Use Variable
+        run: |
+          echo "The value of var2 is: ${{ env.var2 }}"
