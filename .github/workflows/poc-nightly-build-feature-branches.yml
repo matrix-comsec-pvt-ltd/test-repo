@@ -2,7 +2,7 @@ name: Nightly Build for Feature Branches
 
 on:
   schedule:
-    - cron: '28 12 * * *'
+    - cron: '50 12 * * *'
   workflow_dispatch:
 
 jobs:
