@@ -2,20 +2,38 @@ name: Nightly Build for All Present Feature Branches
 
 on:
   schedule:
-    - cron: '20 11 * * *'
+    - cron: '45 11 * * *'
   workflow_dispatch:
 
 jobs:
-  build:
+  fetch-branches:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/heads/feature-')
+    outputs:
+      branches: ${{ steps.get-branches.outputs.branches }}
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Display date and test.txt content
+      - name: Get feature branches
+        id: get-branches
         run: |
-          echo "Current date and time:"
-          date
-          echo "Displaying contents of test.txt:"
-          cat test.txt
+          BRANCHES=$(git ls-remote --heads origin | awk -F'/' '{print $3}' | grep '^feature-' | jq -R -s -c 'split("\n")[:-1]')
+          echo "branches=$BRANCHES" >> $GITHUB_ENV
+          echo "::set-output name=branches::$BRANCHES"
+
+  build:
+    needs: fetch-branches
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: ${{ fromJson(needs.fetch-branches.outputs.branches) }}
+    steps:
+      - name: Checkout branch ${{ matrix.branch }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+      
+      - name: Run build script
+        run: |
+          echo "Building branch ${{ matrix.branch }}"
+          # Add build commands here
