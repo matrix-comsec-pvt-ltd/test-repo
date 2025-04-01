@@ -1,0 +1,39 @@
+name: Nightly Build for Feature Branches
+
+on:
+  schedule:
+    - cron: '28 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch-feature-branches:
+    runs-on: self-hosted
+    outputs:
+      feature_branches: ${{ steps.get-feature-branches.outputs.feature_branches }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get feature branches
+        id: get-feature-branches
+        run: |
+          FEATURE_BRANCHES=$(git ls-remote --heads origin | awk -F'/' '{print $3}' | grep -E '^feature-' | jq -R -s -c 'split("\n")[:-1]')
+          echo "feature_branches=$FEATURE_BRANCHES" >> $GITHUB_ENV
+          echo "::set-output name=feature_branches::$FEATURE_BRANCHES"
+
+  build:
+    needs: fetch-feature-branches
+    runs-on: self-hosted
+    strategy:
+      matrix:
+        branch: ${{ fromJson(needs.fetch-feature-branches.outputs.feature_branches) }}
+    steps:
+      - name: Checkout feature branch ${{ matrix.branch }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+      
+      - name: Run build script
+        run: |
+          echo "Building feature branch: ${{ matrix.branch }}"
+          cat test.txt
