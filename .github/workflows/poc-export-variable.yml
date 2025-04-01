@@ -13,6 +13,12 @@ jobs:
           export var1=kickstart
           echo "var2=migration" >> $GITHUB_ENV
           echo "var3=intelligence" >> $GITHUB_ENV
+      
+      - name: Step 2 - Use Variable
+        run: |
+          echo "The value of var1 is: $var1"
+          echo "The value of var2 is: ${{ env.var2 }}"
+          echo "The value of var3 is: ${{ env.var3 }}"
           
     outputs:
       var3: ${{ steps.set_var.outputs.var3 }}
