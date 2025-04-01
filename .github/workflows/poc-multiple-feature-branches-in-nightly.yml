@@ -1,8 +1,8 @@
-name: nightly build for all present feature branches
+name: Nightly Build for All Present Feature Branches
 
 on:
   schedule:
-    - cron: '55 11 * * *'
+    - cron: '0 11 * * *'
   workflow_dispatch:
 
 jobs:
@@ -13,7 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Display test.txt content
-        run:
+      - name: Display date and test.txt content
+        run: |
+          echo "Current date and time:"
           date
+          echo "Displaying contents of test.txt:"
           cat test.txt
