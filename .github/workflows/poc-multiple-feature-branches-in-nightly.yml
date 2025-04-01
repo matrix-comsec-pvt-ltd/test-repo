@@ -1,0 +1,17 @@
+name: Nightly Build
+
+on:
+  schedule:
+    - cron: '50 10 * * *'  # Runs every day at 16:15 IST (10:45 UTC)
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/feature-')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Display test.txt content
+        run: cat test.txt
