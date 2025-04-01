@@ -2,7 +2,7 @@ name: Nightly Build for Main Branch
 
 on:
   schedule:
-    - cron: '01 12 * * *'
+    - cron: '05 12 * * *'
   workflow_dispatch:
 
 jobs:
