@@ -8,25 +8,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Set Variable
-        run: export var1=kickstart
-
-      - name: Step 2 - Check Environment
-        run: echo "this is step2"
-
-      - name: Step 3 - Use Variable
+        id: set_var  #used for passing variable in diff job
         run: |
-          echo "The value of var1 is: $var1"
-          #here value of var1 will not be available in step3 as each run command in a step runs in a new shell session.
-
+          export var1=kickstart
+          echo "var2=migration" >> $GITHUB_ENV
+          echo "var3=intelligence" >> $GITHUB_ENV
+          
+    outputs:
+      var3: ${{ steps.set_var.outputs.var3 }}
+      
   example_job2:
     runs-on: ubuntu-latest
     steps:
-      - name: Step 1 - Set Variable
-        run: echo "var2=migration" >> $GITHUB_ENV
-
-      - name: Step 2 - Check Environment
-        run: echo "this is step2"
-
-      - name: Step 3 - Use Variable
+      - name: Step 1 - Use From example_job1
         run: |
+          echo "The value of var1 is: $var1"
           echo "The value of var2 is: ${{ env.var2 }}"
+          echo "The value of var3 is: ${{ needs.example_job1.outputs.var3 }}"
+      
