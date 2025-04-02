@@ -1,0 +1,18 @@
+name: Create Tag
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create tag
+        run: |
+          git tag t100
+          git push origin t100
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
