@@ -1,9 +1,7 @@
 name: Run Shell Script and Echo Var
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   run_script:
@@ -20,4 +18,5 @@ jobs:
 
     - name: Echo var
       run: |
-        echo "$MY_VARIABLE"
+        echo "echo-in-yaml=$MY_VARIABLE"
+        ./var1.sh
