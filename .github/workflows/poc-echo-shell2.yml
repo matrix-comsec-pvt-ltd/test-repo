@@ -1,4 +1,4 @@
-name: Run Shell Script and Echo Var
+name: Run Shell Script and Echo Var2
 
 on:
   workflow_dispatch:
