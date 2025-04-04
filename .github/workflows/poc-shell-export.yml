@@ -19,4 +19,5 @@ jobs:
     - name: Echo var
       run: |
         echo "echo-in-yaml=$MY_VARIABLE"
+        chmod +x ./var1.sh
         ./var1.sh
