@@ -25,14 +25,15 @@ jobs:
           JF_USER: ${{ secrets.JFROG_USER }}
           JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
         run: |
-          jf config add \
-            --server-id=matrix-artifactory \
+          jf config add matrix-artifactory \
             --url=$JF_URL \
             --user=$JF_USER \
             --password=$JF_PASSWORD \
             --interactive=false \
             --default=true
 
+          jf config show
+          
       - name: Upload ZIP to Artifactory
         run: |
           jf rt upload "testfile.zip" "mx-test-repo/1.0.0/"
