@@ -28,7 +28,7 @@ jobs:
           JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
         run: |
           jf config add matrix-artifactory \
-            --url=$JF_URL \
+            --artifactory-url=$JF_URL \
             --user=$JF_USER \
             --password=$JF_PASSWORD \
             --interactive=false \
