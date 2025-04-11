@@ -32,7 +32,6 @@ jobs:
             --user="${{ secrets.JFROG_USER }}" \
             --password="${{ secrets.JFROG_PASSWORD }}" \
             --interactive=false \
-            --default=true \
             --insecure-tls=true
       
       - name: Verify Config 
