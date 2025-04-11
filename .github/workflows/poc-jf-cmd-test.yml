@@ -21,7 +21,7 @@ jobs:
 
       - name: Configure JFrog CLI
         env:
-          JF_URL: https://artifactory.matrixcomsec.org
+          JF_URL: ${{ vars.JFROG_URL }}
           JF_USER: ${{ secrets.JFROG_USER }}
           JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
         run: |
