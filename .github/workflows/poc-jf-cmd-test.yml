@@ -25,7 +25,8 @@ jobs:
           JF_USER: ${{ secrets.JFROG_USER }}
           JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
         run: |
-          jf c add matrix-artifactory \
+          jf config add \
+            --server-id=matrix-artifactory \
             --url=$JF_URL \
             --user=$JF_USER \
             --password=$JF_PASSWORD \
