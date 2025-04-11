@@ -1,0 +1,36 @@
+name: Upload to JFrog Artifactory
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload-artifact:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4.5.6
+
+      - name: Create text file and zip
+        run: |
+          echo "This is a test file." > testfile.txt
+          zip testfile.zip testfile.txt
+
+      - name: Configure JFrog CLI
+        env:
+          JF_URL: https://artifactory.matrixcomsec.org
+          JF_USER: ${{ secrets.JFROG_USER }}
+          JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+        run: |
+          jf c add matrix-artifactory \
+            --url=$JF_URL \
+            --user=$JF_USER \
+            --password=$JF_PASSWORD \
+            --interactive=false
+
+      - name: Upload ZIP to Artifactory
+        run: |
+          jf rt upload "testfile.zip" "mx-test-repo/1.0.0/"
