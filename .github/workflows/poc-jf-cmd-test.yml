@@ -40,4 +40,4 @@ jobs:
 
       - name: Upload ZIP to Artifactory
         run: |
-          jf rt upload "testfile.zip" "mx-test-repo/1.0.0/"
+          jf rt upload "testfile.zip" "mx-test-repo/1.0.0/" --insecure-tls=true
