@@ -31,7 +31,8 @@ jobs:
             --artifactory-url="${{ vars.JFROG_URL }}" \
             --user="${{ secrets.JFROG_USER }}" \
             --password="${{ secrets.JFROG_PASSWORD }}" \
-            --interactive=false
+            --interactive=false \
+            --insecure-tls=true
       
       - name: Verify Config 
         run: |
