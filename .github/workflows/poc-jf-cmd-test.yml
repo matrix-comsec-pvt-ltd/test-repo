@@ -30,6 +30,7 @@ jobs:
             --user=$JF_USER \
             --password=$JF_PASSWORD \
             --interactive=false
+            --default=true
 
       - name: Upload ZIP to Artifactory
         run: |
