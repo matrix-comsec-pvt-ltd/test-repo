@@ -5,7 +5,7 @@ on:
 
 jobs:
   upload-artifact:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -13,7 +13,7 @@ jobs:
 
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4.5.6
-
+        
       - name: Create text file and zip
         run: |
           echo "This is a test file." > testfile.txt
@@ -33,7 +33,7 @@ jobs:
             --default=true
 
           jf config show
-          
+
       - name: Upload ZIP to Artifactory
         run: |
           jf rt upload "testfile.zip" "mx-test-repo/1.0.0/"
