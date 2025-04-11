@@ -23,16 +23,15 @@ jobs:
 
       - name: Remove Config
         run: |
-          jf config remove matrix-artifactory --quiet || echo "No existing config to remove"
-        
-      - name: Configure JFrog CLI
+          jf config remove matrix-jfrog-artifactory --quiet || echo "No existing config to remove"
+
+      - name: Add Config
         run: |
-          jf config add matrix-artifactory \
+          jf config add matrix-jfrog-artifactory \
             --artifactory-url="${{ vars.JFROG_URL }}" \
             --user="${{ secrets.JFROG_USER }}" \
             --password="${{ secrets.JFROG_PASSWORD }}" \
-            --interactive=false \
-            --default=true
+            --interactive=false
       
       - name: Verify Config 
         run: |
